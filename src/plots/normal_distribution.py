@@ -1,1 +1,97 @@
-"""Generates and saves a plot of the standard normal distribution's PDF.\n\nThis script uses scipy and matplotlib to create a visualization of the probability\ndensity function (PDF) of a standard normal distribution (mean=0, std=1).\nThe resulting plot is saved as 'normal_distribution.png'.\n"""\nimport matplotlib.pyplot as plt\nimport numpy as np\nfrom scipy.stats import norm, logistic\n\ndef plot_threshold_model(dist_type='logistic', num_classes=5, figsize=(10, 5)):\n    """\n    Generates a conceptual plot for Threshold-Based Ordinal Models.\n\n    This function visualizes how a continuous latent variable is divided into\n    discrete ordinal classes using a set of ordered thresholds (cut-points).\n    It supports either a normal or logistic distribution for the latent variable,\n    illustrating concepts behind models like Proportional Odds Model (logistic)\n    or Ordered Probit Model (normal).\n\n    The plot is saved as 'figures/threshold_based_ordinal_models.png'.\n\n    Args:\n        dist_type (str, optional): The type of underlying distribution for the latent variable.\n                                   Can be 'normal' or 'logistic'. Defaults to 'logistic'.\n        num_classes (int, optional): The number of ordinal classes (k) to display.\n                                     Must be at least 2. Defaults to 5.\n        figsize (tuple, optional): A tuple (width, height) in inches for the figure size.\n                                   Defaults to (10, 5).\n\n    Raises:\n        ValueError: If `num_classes` is less than 2 or `dist_type` is not 'normal' or 'logistic'.\n    """\n    if num_classes < 2:\n        raise ValueError("Number of classes must be at least 2.")\n\n    fig, ax = plt.subplots(figsize=figsize)\n\n    # 1. Define the continuous latent variable range\n    z = np.linspace(-4, 4, 500)\n\n    # 2. Plot the probability density function (PDF) of the latent variable\n    if dist_type == 'normal':\n        pdf = norm.pdf(z)\n        dist_name = "Normal Distribution"\n    elif dist_type == 'logistic':\n        # Logistic PDF is 1 / (exp(-z) + 2 + exp(z))\n        pdf = np.exp(-z) / (1 + np.exp(-z))**2\n        dist_name = "Logistic Distribution"\n    else:\n        raise ValueError("dist_type must be 'normal' or 'logistic'")\n\n    ax.plot(z, pdf, color='darkblue', linewidth=2, label=f'PDF of Latent Variable $z^*$ ({dist_name})')\n    ax.fill_between(z, 0, pdf, color='lightblue', alpha=0.3)\n\n    # 3. Define the k-1 ordered thresholds (cut-points)\n    # Distribute them somewhat evenly for visualization\n    thresholds = np.linspace(-2, 2, num_classes - 1)\n    thresholds_labels = [r'\theta_' + str(i+1) for i in range(num_classes - 1)]\n\n    # 4. Plot the thresholds as vertical dashed lines\n    for i, threshold in enumerate(thresholds):\n        ax.axvline(x=threshold, color='darkred', linestyle='--', linewidth=1.5, alpha=0.7)\n        ax.text(threshold + 0.1, ax.get_ylim()[1] * 0.85, thresholds_labels[i],\n                color='darkred', fontsize=12, ha='left')\n\n    # 5. Add labels for the ordinal categories\n    # Calculate midpoints for category labels\n    category_positions = [-3.5] + list(thresholds) + [3.5] # Extend to edges\n    category_midpoints = [(category_positions[i] + category_positions[i+1]) / 2 for i in range(len(category_positions) - 1)]\n\n    for i in range(num_classes):\n        label_text = f'$C_{i+1}'\n        ax.text(category_midpoints[i], ax.get_ylim()[1] * 0.1, label_text,\n                color='darkgreen', fontsize=14, ha='center', fontweight='bold')\n        # Add a subtle shaded region for each category\n        if i == 0:\n            ax.fill_between(z[z <= thresholds[0]], 0, pdf[z <= thresholds[0]], color='lightgreen', alpha=0.2)\n        elif i == num_classes - 1:\n            ax.fill_between(z[z >= thresholds[-1]], 0, pdf[z >= thresholds[-1]], color='lightgreen', alpha=0.2)\n        else:\n            ax.fill_between(z[(z >= thresholds[i-1]) & (z <= thresholds[i])],\n                            0, pdf[(z >= thresholds[i-1]) & (z <= thresholds[i])],\n                            color='lightgreen', alpha=0.2)\n\n\n    # Annotations and Aesthetics\n    ax.set_title(f'Threshold-Based Ordinal Model ({num_classes} Classes)', fontsize=16)\n    ax.set_xlabel('Continuous Latent Variable $z^*$', fontsize=12)\n    ax.set_ylabel('Probability Density', fontsize=12)\n    ax.set_yticks([]) # Hide y-axis ticks for cleaner look\n    ax.set_xlim(-4, 4)\n    ax.set_ylim(bottom=0)\n    ax.legend(loc='upper right', frameon=True)\n    ax.grid(True, linestyle=':', alpha=0.6)\n    plt.tight_layout()\n    plt.savefig("../../figures/threshold_based_ordinal_models.png", dpi=300)\n    plt.show()\n\n# --- Generate the plots ---\nif __name__ == '__main__':\n    print("Generating figure for Proportional Odds Model (Logistic distribution)...")\n    plot_threshold_model(dist_type='logistic', num_classes=5)\n\n    # print("\nGenerating figure for Ordered Probit Model (Normal distribution)...")\n    # plot_threshold_model(dist_type='normal', num_classes=4)\n
+"""Generates and saves a plot of the standard normal distribution's PDF.
+
+This script uses scipy and matplotlib to create a visualization of the probability
+density function (PDF) of a standard normal distribution (mean=0, std=1).
+The resulting plot is saved as 'normal_distribution.png'.
+"""
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.stats import norm, logistic
+
+def plot_threshold_model(dist_type='logistic', num_classes=5, figsize=(10, 5)):
+    """
+    Generates a conceptual plot for Threshold-Based Ordinal Models.
+
+    This function visualizes how a continuous latent variable is divided into
+    discrete ordinal classes using a set of ordered thresholds (cut-points).
+    It supports either a normal or logistic distribution for the latent variable,
+    illustrating concepts behind models like Proportional Odds Model (logistic)
+    or Ordered Probit Model (normal).
+
+    The plot is saved as 'figures/threshold_based_ordinal_models.png'.
+
+    Args:
+        dist_type (str, optional): The type of underlying distribution for the latent variable.
+                                   Can be 'normal' or 'logistic'. Defaults to 'logistic'.
+        num_classes (int, optional): The number of ordinal classes (k) to display.
+                                     Must be at least 2. Defaults to 5.
+        figsize (tuple, optional): A tuple (width, height) in inches for the figure size.
+                                   Defaults to (10, 5).
+
+    Raises:
+        ValueError: If `num_classes` is less than 2 or `dist_type` is not 'normal' or 'logistic'.
+    """
+    if num_classes < 2:
+        raise ValueError("Number of classes must be at least 2.")
+
+    fig, ax = plt.subplots(figsize=figsize)
+
+    # 1. Define the continuous latent variable range
+    z = np.linspace(-4, 4, 500)
+
+    # 2. Plot the probability density function (PDF) of the latent variable
+    if dist_type == 'normal':
+        pdf = norm.pdf(z)
+        dist_name = "Normal"
+    elif dist_type == 'logistic':
+        pdf = logistic.pdf(z)
+        dist_name = "Logistic"
+    else:
+        raise ValueError("dist_type must be 'normal' or 'logistic'.")
+
+    ax.plot(z, pdf, 'b-', lw=2, label=f'{dist_name} Distribution of Latent Variable $z$')
+    ax.fill_between(z, pdf, color='lightblue', alpha=0.5)
+
+    # 3. Define and plot the thresholds (cut-points)
+    # These are k-1 thresholds for k classes
+    thresholds = np.linspace(-1.5, 1.5, num_classes - 1)
+    colors = plt.cm.viridis(np.linspace(0, 1, num_classes))
+
+    # 4. Shade the regions for each class and add labels
+    # Region for the first class (-inf to threshold_1)
+    z_region = np.linspace(-4, thresholds[0], 100)
+    ax.fill_between(z_region, logistic.pdf(z_region), color=colors[0], alpha=0.6)
+    ax.text(thresholds[0] - 0.8, 0.1, f'Class 1', ha='center', fontsize=12, weight='bold')
+
+    # Regions for intermediate classes
+    for i in range(num_classes - 2):
+        z_region = np.linspace(thresholds[i], thresholds[i+1], 100)
+        ax.fill_between(z_region, logistic.pdf(z_region), color=colors[i+1], alpha=0.6)
+        ax.text((thresholds[i] + thresholds[i+1]) / 2, 0.1, f'Class {i+2}', ha='center', fontsize=12, weight='bold')
+
+    # Region for the last class (threshold_{k-1} to +inf)
+    z_region = np.linspace(thresholds[-1], 4, 100)
+    ax.fill_between(z_region, logistic.pdf(z_region), color=colors[-1], alpha=0.6)
+    ax.text(thresholds[-1] + 0.8, 0.1, f'Class {num_classes}', ha='center', fontsize=12, weight='bold')
+
+    # Plot threshold lines
+    for i, t in enumerate(thresholds):
+        ax.axvline(t, color='red', linestyle='--', lw=1.5)
+        ax.text(t, 0.35, f'$\Theta_{i+1}$', ha='center', fontsize=14, color='red')
+
+    # 5. Final plot formatting
+    ax.set_title(f'Family 1: Threshold-Based Ordinal Model (k={num_classes})', fontsize=16)
+    ax.set_xlabel(r'Latent Variable $z = X\beta$', fontsize=12)
+    ax.set_ylabel('Probability Density', fontsize=12)
+    ax.legend(loc='upper left')
+    ax.grid(True, which='both', linestyle='--', linewidth=0.5)
+    ax.set_ylim(bottom=0)
+    ax.set_xlim(-4, 4)
+
+    plt.tight_layout()
+    plt.savefig("../../figures/threshold_based_ordinal_models.png", dpi=300)
+    plt.show()
+
+# --- Generate the plot ---
+if __name__ == '__main__':
+    plot_threshold_model(dist_type='logistic', num_classes=5)

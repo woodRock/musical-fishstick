@@ -1,1 +1,86 @@
-"""Generates a flowchart illustrating the architecture of deep learning ordinal models.\n\nThis script uses the graphviz library to create a diagram that shows the\nrelationship and structure of various deep learning models for ordinal regression,\nsuch as POM, CORN, and CORAL. The output is saved as a PNG image file.\n"""\nimport matplotlib.pyplot as plt\nimport matplotlib.patches as patches\n\ndef plot_deep_learning_models(k=5, figsize=(14, 7)):\n    """\n    Generates a conceptual plot for Deep Learning Ordinal Models.\n    \n    Args:\n        k (int): Number of ordinal classes for the example (e.g., 5-star rating).\n        figsize (tuple): Figure size.\n    """\n    \n    fig, axes = plt.subplots(1, 2, figsize=figsize)\n    fig.suptitle('Family 3: Deep Learning Strategies for Ordinal Classification', fontsize=18, y=0.98)\n    \n    # --- Define styles ---\n    boxstyle = dict(boxstyle='round,pad=0.7', fc='aliceblue', ec='navy', lw=1.5)\n    arrowstyle = dict(arrowstyle='-|>', mutation_scale=20, lw=2.0, color='dimgray')\n    output_style_a = dict(boxstyle='round,pad=0.7', fc='moccasin', ec='darkorange', lw=1.5)\n    output_style_b = dict(boxstyle='round,pad=0.7', fc='honeydew', ec='darkgreen', lw=1.5)\n    loss_style = dict(boxstyle='round,pad=0.7', fc='mistyrose', ec='darkred', lw=1.5)\n\n    # ==================================================================\n    # Plot (a): Ordinal Output Layer Strategy\n    # ==================================================================\n    ax = axes[0]\n    ax.set_title('(a) Ordinal Output Layer (e.g., Niu et al. 2016)', fontsize=14)\n    ax.axis('off')\n    ax.set_ylim(0, 1)\n    ax.set_xlim(0, 1)\n\n    # --- Draw boxes ---\n    ax.text(0.5, 0.15, "Input (Image, Text, etc.)", ha='center', va='center', fontsize=12, bbox=boxstyle)\n    ax.text(0.5, 0.4, "CNN / Transformer Backbone", ha='center', va='center', fontsize=12, bbox=boxstyle)\n    \n    # --- Output Layer (k-1 neurons) ---\n    output_text = (f"Ordinal Output Layer\n($k-1 = {k-1}$ Sigmoid Neurons)\n\n"\n                   f"$P(y > C_1)$\n"\n                   f"$P(y > C_2)$\n"\n                   f"..."\n                   f"\n$P(y > C_{k-1})$")\n    ax.text(0.5, 0.75, output_text, ha='center', va='center', fontsize=12, bbox=output_style_a)\n\n    # --- Draw arrows ---\n    # Arrow: Input -> Backbone\n    arrow1 = patches.FancyArrowPatch((0.5, 0.22), (0.5, 0.33), **arrowstyle)\n    ax.add_patch(arrow1)\n    \n    # Arrow: Backbone -> Output Layer\n    arrow2 = patches.FancyArrowPatch((0.5, 0.47), (0.5, 0.60), **arrowstyle)\n    ax.add_patch(arrow2)\n    \n    # Arrow: Output -> Final Prediction\n    ax.text(0.5, 0.95, "Final Class Probabilities\n(via combination)", ha='center', va='center', fontsize=10)\n    arrow3 = patches.FancyArrowPatch((0.5, 0.90), (0.5, 0.92), **arrowstyle)\n    ax.add_patch(arrow3)\n\n    # ==================================================================\n    # Plot (b): Ordinal Loss Function Strategy\n    # ==================================================================\n    ax = axes[1]\n    ax.set_title('(b) Ordinal Loss Function (e.g., CORAL, EMD)', fontsize=14)\n    ax.axis('off')\n    ax.set_ylim(0, 1)\n    ax.set_xlim(0, 1)\n\n    # --- Draw boxes ---\n    ax.text(0.5, 0.15, "Input (Image, Text, etc.)", ha='center', va='center', fontsize=12, bbox=boxstyle)\n    ax.text(0.5, 0.4, "CNN / Transformer Backbone", ha='center', va='center', fontsize=12, bbox=boxstyle)\n    \n    # --- Standard Output Layer (k neurons) ---\n    output_text_b = (f"Standard Softmax Layer\n($k = {k}$ Neurons)\n\n"\n                     f"$P(y = C_1)$\n"\n                     f"$P(y = C_2)$\n"\n                     f"..."\n                     f"\n$P(y = C_k)$")\n    ax.text(0.5, 0.7, output_text_b, ha='center', va='center', fontsize=12, bbox=output_style_b)\n\n    # --- Loss Function Box ---\n    ax.text(0.5, 0.92, "Ordinal Loss Function\n(e.g., CORAL, CORN, EMD)", ha='center', va='center', fontsize=12, bbox=loss_style)\n\n    # --- Draw arrows ---\n    # Arrow: Input -> Backbone\n    arrow1_b = patches.FancyArrowPatch((0.5, 0.22), (0.5, 0.33), **arrowstyle)\n    ax.add_patch(arrow1_b)\n    \n    # Arrow: Backbone -> Output Layer\n    arrow2_b = patches.FancyArrowPatch((0.5, 0.47), (0.5, 0.59), **arrowstyle)\n    ax.add_patch(arrow2_b)\n    \n    # Arrow: Output Layer -> Loss Function\n    arrow3_b = patches.FancyArrowPatch((0.5, 0.81), (0.5, 0.87), **arrowstyle)\n    ax.add_patch(arrow3_b)\n\n    # --- Finalize ---\n    plt.tight_layout(rect=[0, 0.03, 1, 0.95])\n    plt.savefig("../../figures/deep_learning_ordinal_models.png", dpi=300)\n    plt.show()\n\n# --- Generate the plot ---\n# Using k=5 as a common example (e.g., 5-star ratings or 0-4 severity)\nplot_deep_learning_models(k=5)\n
+"""Generates a flowchart illustrating the architecture of deep learning ordinal models.
+
+This script uses the graphviz library to create a diagram that shows the
+relationship and structure of various deep learning models for ordinal regression,
+such as POM, CORN, and CORAL. The output is saved as a PNG image file.
+"""
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
+def plot_deep_learning_models(k=5, figsize=(14, 7)):
+    """
+    Generates a conceptual plot for Deep Learning Ordinal Models.
+    
+    Args:
+        k (int): Number of ordinal classes for the example (e.g., 5-star rating).
+        figsize (tuple): Figure size.
+    """
+    
+    fig, axes = plt.subplots(1, 2, figsize=figsize)
+    fig.suptitle('Family 3: Deep Learning Strategies for Ordinal Classification', fontsize=18, y=0.98)
+    
+    # --- Define styles ---
+    boxstyle = dict(boxstyle='round,pad=0.7', fc='aliceblue', ec='navy', lw=1.5)
+    arrowstyle = dict(arrowstyle='-|>', mutation_scale=20, lw=2.0, color='dimgray')
+    output_style_a = dict(boxstyle='round,pad=0.7', fc='moccasin', ec='darkorange', lw=1.5)
+    output_style_b = dict(boxstyle='round,pad=0.7', fc='honeydew', ec='darkgreen', lw=1.5)
+    loss_style = dict(boxstyle='round,pad=0.7', fc='mistyrose', ec='darkred', lw=1.5)
+
+    # ==================================================================
+    # Plot (a): Ordinal Output Layer Strategy
+    # ==================================================================
+    ax = axes[0]
+    ax.set_title('(a) Ordinal Output Layer (e.g., Niu et al. 2016)', fontsize=14)
+    ax.axis('off')
+    ax.set_ylim(0, 1)
+    ax.set_xlim(0, 1)
+
+    # --- Draw boxes ---
+    ax.text(0.5, 0.15, "Input (Image, Text, etc.)", ha='center', va='center', fontsize=12, bbox=boxstyle)
+    ax.text(0.5, 0.4, "CNN / Transformer Backbone", ha='center', va='center', fontsize=12, bbox=boxstyle)
+    
+    # --- Output Layer (k-1 neurons) ---
+    output_text = (f"Ordinal Output Layer\n({k-1} neurons, sigmoid)")
+    ax.text(0.5, 0.65, output_text, ha='center', va='center', fontsize=12, bbox=output_style_a)
+    
+    # --- Final Prediction ---
+    ax.text(0.5, 0.85, f"Predicted Rank = $1 + \\sum_{{i=1}}^{{k-1}} y_i$", ha='center', va='center', fontsize=14)
+
+    # --- Draw arrows ---
+    ax.annotate("", xy=(0.5, 0.3), xytext=(0.5, 0.25), arrowprops=arrowstyle)
+    ax.annotate("", xy=(0.5, 0.52), xytext=(0.5, 0.48), arrowprops=arrowstyle)
+    ax.annotate("", xy=(0.5, 0.75), xytext=(0.5, 0.7), arrowprops=arrowstyle)
+
+    # ==================================================================
+    # Plot (b): Ordinal Loss Function Strategy
+    # ==================================================================
+    ax = axes[1]
+    ax.set_title('(b) Ordinal Loss Function (e.g., CORAL, CORN, EMD)', fontsize=14)
+    ax.axis('off')
+    ax.set_ylim(0, 1)
+    ax.set_xlim(0, 1)
+
+    # --- Draw boxes ---
+    ax.text(0.5, 0.15, "Input (Image, Text, etc.)", ha='center', va='center', fontsize=12, bbox=boxstyle)
+    ax.text(0.5, 0.4, "CNN / Transformer Backbone", ha='center', va='center', fontsize=12, bbox=boxstyle)
+    
+    # --- Output Layer (can be varied) ---
+    output_text = (f"Standard Output Layer\n(e.g., {k} classes for softmax, or 1 for regression)")
+    ax.text(0.5, 0.65, output_text, ha='center', va='center', fontsize=12, bbox=output_style_b)
+    
+    # --- Ordinal Loss ---
+    ax.text(0.5, 0.85, "Ordinal Loss Function\n(e.g., CORAL, CORN)", ha='center', va='center', fontsize=12, bbox=loss_style)
+
+    # --- Draw arrows ---
+    ax.annotate("", xy=(0.5, 0.3), xytext=(0.5, 0.25), arrowprops=arrowstyle)
+    ax.annotate("", xy=(0.5, 0.52), xytext=(0.5, 0.48), arrowprops=arrowstyle)
+    ax.annotate("", xy=(0.5, 0.75), xytext=(0.5, 0.7), arrowprops=arrowstyle)
+
+    # --- Finalize ---
+    plt.tight_layout(rect=[0, 0, 1, 0.92])
+    plt.savefig("../../figures/deep_learning_ordinal_models.png", dpi=300)
+    plt.show()
+
+# --- Generate the plot ---
+if __name__ == '__main__':
+    plot_deep_learning_models(k=5)
