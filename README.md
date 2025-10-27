@@ -194,9 +194,15 @@ The results also highlight the inconsistent performance or failure of certain mo
 
 Finally, a direct comparison between the naive `MLP (Classification)` and its ordinal-aware counterparts (e.g., `CORN`, `EMD`, and `SVOR`) is illuminating. On Boston Housing and Poker Hand, the specialized ordinal models demonstrate a clear, statistically significant superiority over the naive nominal classification approach across all ordinal metrics. However, on the Wine Quality dataset, the performance of all MLP-based models is tightly clustered. The best ordinal model (MLP (EMD Loss)) offers only a marginal, likely insignificant, improvement over the naive MLP. This suggests that while specialized ordinal losses are generally beneficial, their impact can be modest on particularly noisy or imbalanced datasets.
 
-A visual summary of these performance metrics for the MLP-based models is presented in Figure~\ref{fig:performance_summary_grid}.
+A visual summary of these performance metrics for the MLP-based models is presented in Figure~ef{fig:performance_summary_grid}.
 
-![Summary of model performance across key metrics and datasets. The right column, including the bottom, shows metrics where higher is better (QWK, Accuracy, Balanced Accuracy), while the left column, excluding the bottom, shows error metrics where lower is better (MAE, MSE). All evaluations use an MLP base model.](figures/performance_summary_chart.png)
+![Mean Absolute Error (MAE)](figures/mae_summary_chart.png)
+![Quadratic Weighted Kappa (QWK)](figures/qwk_summary_chart.png)
+![Mean Squared Error (MSE)](figures/mse_summary_chart.png)
+![Accuracy](figures/accuracy_summary_chart.png)
+![Balanced Accuracy](figures/balanced_acc._summary_chart.png)
+
+Summary of model performance across key metrics and datasets. The right column, including the bottom, shows metrics where higher is better (QWK, Accuracy, Balanced Accuracy), while the left column, excluding the bottom, shows error metrics where lower is better (MAE, MSE). All evaluations use an MLP base model.
 
 The analysis of the generated figures largely corroborates the findings from the detailed results table, highlighting clear trends in model performance across the low-dimensional datasets. Deep learning models utilizing ordinal-aware loss functions, such as MLP (EMD Loss) and CORN, consistently demonstrate strong performance, often securing the lowest Mean Absolute Error (MAE) and highest Quadratic Weighted Kappa (QWK) on datasets like Boston Housing and Poker Hand. This visual evidence underscores the advantage of explicitly accounting for the ordinal nature of the target variable in tasks with complex underlying patterns.
 
