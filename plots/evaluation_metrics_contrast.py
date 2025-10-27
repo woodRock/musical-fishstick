@@ -1,3 +1,5 @@
+"""Module for generating a conceptual plot to contrast standard and ordinal-aware evaluation metrics."""
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -5,10 +7,19 @@ def plot_evaluation_metrics_contrast(k=5, figsize=(12, 6)):
     """
     Generates a conceptual plot contrasting Standard Accuracy with
     Ordinal-aware metrics (like MAE or QWK).
-    
+
+    This function visualizes the difference in how standard classification accuracy
+    (which treats all misclassifications equally) and ordinal-aware metrics
+    (which penalize misclassifications based on their distance from the true label)
+    assign error penalties. It uses heatmaps to represent the weight matrices for
+    a given number of classes `k`.
+
+    The plot is saved as 'figures/evaluation_metrics_contrast.png'.
+
     Args:
-        k (int): Number of classes (e.g., 5).
-        figsize (tuple): Figure size.
+        k (int, optional): The number of classes for the example. Defaults to 5.
+        figsize (tuple, optional): A tuple (width, height) in inches for the figure size.
+                                   Defaults to (12, 6).
     """
     
     fig, axes = plt.subplots(1, 2, figsize=figsize)
@@ -37,7 +48,8 @@ def plot_evaluation_metrics_contrast(k=5, figsize=(12, 6)):
             
     
     # --- Ticks and Labels ---
-    labels = [f'$C_{i+1}$' for i in range(k)]
+    labels = [f'$C_{i+1}
+ for i in range(k)]
     ticks = np.arange(k)
 
     # ==================================================================
@@ -113,4 +125,5 @@ def plot_evaluation_metrics_contrast(k=5, figsize=(12, 6)):
     plt.show()
 
 # --- Generate the plot ---
-plot_evaluation_metrics_contrast(k=5)
+if __name__ == '__main__':
+    plot_evaluation_metrics_contrast(k=5)

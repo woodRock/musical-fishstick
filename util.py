@@ -1,3 +1,5 @@
+"""Utility functions for data loading, preprocessing, and metric calculation."""
+
 import pandas as pd
 from sklearn.preprocessing import OrdinalEncoder, StandardScaler
 from sklearn.metrics import (
@@ -9,7 +11,18 @@ from sklearn.metrics import (
 )
 
 def get_serializable_params(model):
-    """Gets JSON-serializable parameters from a scikit-learn model."""
+    """Gets JSON-serializable parameters from a scikit-learn model.
+
+    Iterates through a scikit-learn model's parameters and converts non-serializable
+    types (like objects or functions) to their string representations, making the
+    dictionary suitable for JSON serialization.
+
+    Args:
+        model: A fitted scikit-learn model instance.
+
+    Returns:
+        dict: A dictionary of serializable model parameters.
+    """
     params = model.get_params()
     serializable_params = {}
     for key, value in params.items():
@@ -21,7 +34,21 @@ def get_serializable_params(model):
 
 
 def calculate_metrics(y_true, y_pred, is_regression=False):
-    """Calculates and returns a dictionary of evaluation metrics."""
+    """Calculates and returns a dictionary of evaluation metrics.
+
+    For regression tasks, it computes Mean Absolute Error (MAE) and Mean Squared Error (MSE).
+    For classification tasks, it computes MAE, Quadratic Weighted Kappa (QWK), MSE, Accuracy,
+    and Adjusted Balanced Accuracy.
+
+    Args:
+        y_true (array-like): True labels or target values.
+        y_pred (array-like): Predicted labels or target values.
+        is_regression (bool, optional): If True, calculates regression metrics.
+                                        If False, calculates classification metrics. Defaults to False.
+
+    Returns:
+        dict: A dictionary where keys are metric names and values are their computed scores.
+    """
     if is_regression:
         return {
             "MAE": mean_absolute_error(y_true, y_pred),
@@ -37,7 +64,16 @@ def calculate_metrics(y_true, y_pred, is_regression=False):
         }
 
 def load_car_evaluation():
-    """Loads and preprocesses the Car Evaluation dataset."""
+    """Loads and preprocesses the Car Evaluation dataset.
+
+    Applies ordinal encoding to categorical features and the target variable.
+
+    Returns:
+        tuple: A tuple containing:
+            - X (pd.DataFrame): Features DataFrame.
+            - y (pd.Series): Target Series.
+            - is_regression (bool): False, as it's a classification problem.
+    """
     cols = ['buying', 'maint', 'doors', 'persons', 'lug_boot', 'safety', 'class']
     category_orders = [
         ['low', 'med', 'high', 'vhigh'],
@@ -57,7 +93,16 @@ def load_car_evaluation():
     return X, y, False # Returns X, y, is_regression
 
 def load_wine_quality():
-    """Loads and preprocesses the Wine Quality dataset."""
+    """Loads and preprocesses the Wine Quality dataset.
+
+    Combines red and white wine datasets, then scales numerical features.
+
+    Returns:
+        tuple: A tuple containing:
+            - X (pd.DataFrame): Features DataFrame.
+            - y (pd.Series): Target Series.
+            - is_regression (bool): False, as it's a classification problem.
+    """
     red_wine_path = '/Users/woodj/Desktop/musical-fishstick/datasets/wine_quality/winequality-red.csv'
     white_wine_path = '/Users/woodj/Desktop/musical-fishstick/datasets/wine_quality/winequality-white.csv'
     df_red = pd.read_csv(red_wine_path, sep=';')
@@ -71,7 +116,17 @@ def load_wine_quality():
     return X, y, False
 
 def load_boston_housing():
-    """Loads the Boston Housing dataset and converts it to an ordinal problem."""
+    """Loads the Boston Housing dataset and converts it to an ordinal problem.
+
+    The continuous 'MEDV' target is converted into 4 ordinal categories using quartiles.
+    Features are then scaled.
+
+    Returns:
+        tuple: A tuple containing:
+            - X (pd.DataFrame): Features DataFrame.
+            - y (pd.Series): Ordinal target Series.
+            - is_regression (bool): False, as it's now a classification problem.
+    """
     file_path = '/Users/woodj/Desktop/musical-fishstick/datasets/boston_housing/boston_housing.csv'
     cols = ['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT', 'MEDV']
     df = pd.read_csv(file_path, delim_whitespace=True, header=None, names=cols)
@@ -95,7 +150,16 @@ def load_boston_housing():
     return X, y, False # Now a classification problem
 
 def load_poker_hand():
-    """Loads and preprocesses the Poker Hand dataset."""
+    """Loads and preprocesses the Poker Hand dataset.
+
+    Remaps target labels to be zero-indexed.
+
+    Returns:
+        tuple: A tuple containing:
+            - X (pd.DataFrame): Features DataFrame.
+            - y (pd.Series): Target Series (zero-indexed).
+            - is_regression (bool): False, as it's a classification problem.
+    """
     file_path = '/Users/woodj/Desktop/musical-fishstick/datasets/poker_hand/poker-hand-training-true.data'
     cols = ['S1', 'C1', 'S2', 'C2', 'S3', 'C3', 'S4', 'C4', 'S5', 'C5', 'CLASS']
     df = pd.read_csv(file_path, header=None, names=cols)
@@ -109,7 +173,20 @@ def load_poker_hand():
 
 
 def load_dataset(name):
-    """Dispatcher to load the specified dataset."""
+    """Dispatcher to load the specified dataset.
+
+    Args:
+        name (str): The name of the dataset to load (e.g., 'car', 'wine', 'boston', 'poker').
+
+    Returns:
+        tuple: A tuple containing:
+            - X (pd.DataFrame): Features DataFrame.
+            - y (pd.Series): Target Series.
+            - is_regression (bool): True if regression, False if classification.
+
+    Raises:
+        ValueError: If an unknown dataset name is provided.
+    """
     if name.lower() == 'car':
         return load_car_evaluation()
     elif name.lower() == 'wine':

@@ -1,3 +1,5 @@
+"""Module for training and prediction functions for various deep learning models."""
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -10,7 +12,19 @@ from pom_scratch import pom_loss, pom_predict
 from adjacent_model import adjacent_loss, adjacent_predict
 
 def train_model(model, X_train, y_train, n_epochs=20, batch_size=32, lr=0.001):
-    """Handles the training loop for a standard PyTorch classification model."""
+    """Handles the training loop for a standard PyTorch classification model.
+
+    Args:
+        model (nn.Module): The PyTorch model to train.
+        X_train (pd.DataFrame): Training features.
+        y_train (pd.Series): Training labels.
+        n_epochs (int, optional): Number of training epochs. Defaults to 20.
+        batch_size (int, optional): Batch size for training. Defaults to 32.
+        lr (float, optional): Learning rate for the optimizer. Defaults to 0.001.
+
+    Returns:
+        nn.Module: The trained PyTorch model.
+    """
     # Convert pandas data to PyTorch tensors
     X_train_tensor = torch.tensor(X_train.values, dtype=torch.float32)
     y_train_tensor = torch.tensor(y_train.values, dtype=torch.long)
@@ -41,7 +55,15 @@ def train_model(model, X_train, y_train, n_epochs=20, batch_size=32, lr=0.001):
     return model
 
 def predict(model, X_test):
-    """Makes predictions with a trained PyTorch model."""
+    """Makes predictions with a trained PyTorch model.
+
+    Args:
+        model (nn.Module): The trained PyTorch model.
+        X_test (pd.DataFrame): Test features.
+
+    Returns:
+        np.ndarray: Predicted class labels.
+    """
     model.eval() # Set the model to evaluation mode
     X_test_tensor = torch.tensor(X_test.values, dtype=torch.float32)
     with torch.no_grad():
@@ -51,7 +73,19 @@ def predict(model, X_test):
 
 
 def train_coral_model(model, X_train, y_train, n_epochs=20, batch_size=32, lr=0.001):
-    """Handles the training loop for a CORAL model."""
+    """Handles the training loop for a CORAL model.
+
+    Args:
+        model (nn.Module): The CORAL model to train.
+        X_train (pd.DataFrame): Training features.
+        y_train (pd.Series): Training labels.
+        n_epochs (int, optional): Number of training epochs. Defaults to 20.
+        batch_size (int, optional): Batch size for training. Defaults to 32.
+        lr (float, optional): Learning rate for the optimizer. Defaults to 0.001.
+
+    Returns:
+        nn.Module: The trained CORAL model.
+    """
     X_train_tensor = torch.tensor(X_train.values, dtype=torch.float32)
     y_train_tensor = torch.tensor(y_train.values, dtype=torch.long)
 
@@ -76,7 +110,15 @@ def train_coral_model(model, X_train, y_train, n_epochs=20, batch_size=32, lr=0.
     return model
 
 def predict_coral(model, X_test):
-    """Makes predictions with a trained CORAL model."""
+    """Makes predictions with a trained CORAL model.
+
+    Args:
+        model (nn.Module): The trained CORAL model.
+        X_test (pd.DataFrame): Test features.
+
+    Returns:
+        np.ndarray: Predicted class labels.
+    """
     model.eval()
     X_test_tensor = torch.tensor(X_test.values, dtype=torch.float32)
     with torch.no_grad():
@@ -86,7 +128,20 @@ def predict_coral(model, X_test):
 
 
 def train_pom_scratch_model(model, X_train, y_train, num_classes, n_epochs=20, batch_size=32, lr=0.01):
-    """Handles the training loop for the scratch POM model."""
+    """Handles the training loop for the scratch POM model.
+
+    Args:
+        model (nn.Module): The POM model to train.
+        X_train (pd.DataFrame): Training features.
+        y_train (pd.Series): Training labels.
+        num_classes (int): Total number of classes.
+        n_epochs (int, optional): Number of training epochs. Defaults to 20.
+        batch_size (int, optional): Batch size for training. Defaults to 32.
+        lr (float, optional): Learning rate for the optimizer. Defaults to 0.01.
+
+    Returns:
+        nn.Module: The trained POM model.
+    """
     X_train_tensor = torch.tensor(X_train.values, dtype=torch.float32)
     y_train_tensor = torch.tensor(y_train.values, dtype=torch.long)
 
@@ -111,7 +166,15 @@ def train_pom_scratch_model(model, X_train, y_train, num_classes, n_epochs=20, b
     return model
 
 def predict_pom_scratch(model, X_test):
-    """Makes predictions with a trained scratch POM model."""
+    """Makes predictions with a trained scratch POM model.
+
+    Args:
+        model (nn.Module): The trained POM model.
+        X_test (pd.DataFrame): Test features.
+
+    Returns:
+        np.ndarray: Predicted class labels.
+    """
     model.eval()
     X_test_tensor = torch.tensor(X_test.values, dtype=torch.float32)
     with torch.no_grad():
@@ -121,7 +184,19 @@ def predict_pom_scratch(model, X_test):
 
 
 def train_adjacent_model(model, X_train, y_train, n_epochs=20, batch_size=32, lr=0.01):
-    """Handles the training loop for the scratch Adjacent Category model."""
+    """Handles the training loop for the scratch Adjacent Category model.
+
+    Args:
+        model (nn.Module): The Adjacent Category model to train.
+        X_train (pd.DataFrame): Training features.
+        y_train (pd.Series): Training labels.
+        n_epochs (int, optional): Number of training epochs. Defaults to 20.
+        batch_size (int, optional): Batch size for training. Defaults to 32.
+        lr (float, optional): Learning rate for the optimizer. Defaults to 0.01.
+
+    Returns:
+        nn.Module: The trained Adjacent Category model.
+    """
     X_train_tensor = torch.tensor(X_train.values, dtype=torch.float32)
     y_train_tensor = torch.tensor(y_train.values, dtype=torch.long)
 
@@ -146,7 +221,15 @@ def train_adjacent_model(model, X_train, y_train, n_epochs=20, batch_size=32, lr
     return model
 
 def predict_adjacent(model, X_test):
-    """Makes predictions with a trained scratch Adjacent Category model."""
+    """Makes predictions with a trained scratch Adjacent Category model.
+
+    Args:
+        model (nn.Module): The trained Adjacent Category model.
+        X_test (pd.DataFrame): Test features.
+
+    Returns:
+        np.ndarray: Predicted class labels.
+    """
     model.eval()
     X_test_tensor = torch.tensor(X_test.values, dtype=torch.float32)
     with torch.no_grad():
@@ -156,7 +239,19 @@ def predict_adjacent(model, X_test):
 
 
 def train_emd_model(model, X_train, y_train, n_epochs=20, batch_size=32, lr=0.001):
-    """Handles the training loop for a model using EMD loss."""
+    """Handles the training loop for a model using EMD loss.
+
+    Args:
+        model (nn.Module): The model to train with EMD loss.
+        X_train (pd.DataFrame): Training features.
+        y_train (pd.Series): Training labels.
+        n_epochs (int, optional): Number of training epochs. Defaults to 20.
+        batch_size (int, optional): Batch size for training. Defaults to 32.
+        lr (float, optional): Learning rate for the optimizer. Defaults to 0.001.
+
+    Returns:
+        nn.Module: The trained model.
+    """
     X_train_tensor = torch.tensor(X_train.values, dtype=torch.float32)
     y_train_tensor = torch.tensor(y_train.values, dtype=torch.long)
 
@@ -182,7 +277,20 @@ def train_emd_model(model, X_train, y_train, n_epochs=20, batch_size=32, lr=0.00
 
 
 def train_corn_model(model, X_train, y_train, num_classes, n_epochs=20, batch_size=32, lr=0.001):
-    """Handles the training loop for a CORN model."""
+    """Handles the training loop for a CORN model.
+
+    Args:
+        model (nn.Module): The CORN model to train.
+        X_train (pd.DataFrame): Training features.
+        y_train (pd.Series): Training labels.
+        num_classes (int): Total number of classes.
+        n_epochs (int, optional): Number of training epochs. Defaults to 20.
+        batch_size (int, optional): Batch size for training. Defaults to 32.
+        lr (float, optional): Learning rate for the optimizer. Defaults to 0.001.
+
+    Returns:
+        nn.Module: The trained CORN model.
+    """
     X_train_tensor = torch.tensor(X_train.values, dtype=torch.float32)
     y_train_tensor = torch.tensor(y_train.values, dtype=torch.long)
 

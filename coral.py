@@ -4,10 +4,24 @@ import torch.nn as nn
 class OrdinalHead(nn.Module):
     """Head for CORAL and CORN which expect num_classes - 1 outputs."""
     def __init__(self, input_size, num_classes):
+        """Initializes the OrdinalHead.
+
+        Args:
+            input_size (int): The number of input features.
+            num_classes (int): The total number of ordered classes.
+        """
         super(OrdinalHead, self).__init__()
         self.fc = nn.Linear(input_size, num_classes - 1)
 
     def forward(self, x):
+        """Performs a forward pass through the OrdinalHead.
+
+        Args:
+            x (torch.Tensor): The input tensor.
+
+        Returns:
+            torch.Tensor: The output logits.
+        """
         logits = self.fc(x)
         return logits
 

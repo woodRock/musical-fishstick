@@ -1,3 +1,5 @@
+"""Module for Earth Mover's Distance (EMD) loss calculation."""
+
 import torch
 
 def emd_loss(predictions, targets):
@@ -5,11 +7,11 @@ def emd_loss(predictions, targets):
     Computes the Earth Mover's Distance (EMD) loss, also known as Ranked Probability Score.
 
     Args:
-        predictions: Model predictions (logits), shape (batch_size, num_classes).
-        targets: Ground truth labels, shape (batch_size).
+        predictions (torch.Tensor): Model predictions (logits), shape (batch_size, num_classes).
+        targets (torch.Tensor): Ground truth labels, shape (batch_size).
 
     Returns:
-        The EMD loss.
+        torch.Tensor: The EMD loss.
     """
     # Convert predictions to probabilities and calculate CDF
     predictions_cdf = torch.cumsum(torch.softmax(predictions, dim=-1), dim=-1)

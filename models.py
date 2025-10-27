@@ -1,3 +1,5 @@
+"""Module for defining and retrieving various machine learning models."""
+
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 from sklearn.svm import SVC, SVR
 import mord
@@ -10,7 +12,21 @@ from classification_head import ClassificationHead
 from combined_model import CombinedModel
 
 def get_dl_model(base_model_name, head_model_name, is_regression, **kwargs):
-    """Assembles and returns a combined PyTorch model."""
+    """Assembles and returns a combined PyTorch model.
+
+    Args:
+        base_model_name (str): The name of the base model (e.g., 'Linear', 'MLP').
+        head_model_name (str): The name of the head model (e.g., 'POM', 'Adjacent', 'Coral', 'MLP').
+        is_regression (bool): True if the task is regression, False for classification.
+        \**kwargs (dict): Additional keyword arguments for model initialization,
+                         e.g., 'input_size', 'num_classes'.
+
+    Returns:
+        CombinedModel: An instance of the CombinedModel with the specified base and head.
+
+    Raises:
+        ValueError: If an unknown base model or head model name is provided.
+    """
     input_size = kwargs['input_size']
     num_classes = kwargs['num_classes']
 
@@ -39,7 +55,19 @@ def get_dl_model(base_model_name, head_model_name, is_regression, **kwargs):
     return CombinedModel(base_model, head_model)
 
 def get_sklearn_model(model_name, is_regression):
-    """Returns a standard scikit-learn model."""
+    """Returns a standard scikit-learn model.
+
+    Args:
+        model_name (str): The name of the scikit-learn model (e.g., 'DecisionTree', 'SVM', 'CLM').
+        is_regression (bool): True if the task is regression, False for classification.
+
+    Returns:
+        sklearn.base.BaseEstimator: An instance of the specified scikit-learn model.
+
+    Raises:
+        ValueError: If an unknown scikit-learn model name is provided,
+                    or if CLM is requested for a regression task.
+    """
     if model_name.lower() == 'decisiontree':
         return DecisionTreeRegressor(random_state=42) if is_regression else DecisionTreeClassifier(criterion='entropy', random_state=42)
     elif model_name.lower() == 'svm':

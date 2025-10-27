@@ -1,10 +1,22 @@
+"""Module for generating LaTeX tables from model evaluation results."""
+
 import os
 import json
 import pandas as pd
 from scipy.stats import ttest_ind
 
 def generate_latex_table(df, model_order):
-    """Generates a LaTeX table from a DataFrame with mean/std results and significance."""
+    """Generates a LaTeX table from a DataFrame with mean/std results and significance.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing model performance data, including mean,
+                           standard deviation, and significance indicators for various metrics.
+        model_order (list): A list of model names in the desired display order.
+
+    Returns:
+        str: A string containing the complete LaTeX table.
+
+    """
     header = r"""\begin{table*}[t]
 \centering
 \caption{Comparing Model Performance on Benchmark Datasets. Values are mean $\pm$ std over 30 runs. A (*) indicates a result is statistically significantly better than the Decision Tree baseline (p < 0.05).}

@@ -1,9 +1,23 @@
+"""Module for generating a conceptual plot to contrast different data types."""
+
 import matplotlib.pyplot as plt
 import numpy as np
 
 def plot_data_type_contrast(figsize=(10, 4)):
     """
     Generates a conceptual plot contrasting Nominal, Ordinal, and Metric data.
+
+    This function creates a figure with three subplots, each illustrating the
+    characteristics of a different data type:
+    - Nominal data: Categories without inherent order (e.g., Apple, Banana, Orange).
+    - Ordinal data: Categories with a meaningful order but unequal intervals (e.g., Small, Medium, Large).
+    - Metric data: Ordered data with meaningful and equidistant intervals (e.g., a number line).
+
+    The plot is saved as 'figures/data_type_contrast.png'.
+
+    Args:
+        figsize (tuple, optional): A tuple (width, height) in inches for the figure size.
+                                   Defaults to (10, 4).
     """
     fig, axes = plt.subplots(1, 3, figsize=figsize, sharey=True)
     fig.suptitle('Distinguishing Data Types: Nominal, Ordinal, and Metric', fontsize=16, y=1.05)
@@ -67,4 +81,5 @@ def plot_data_type_contrast(figsize=(10, 4)):
     plt.show()
 
 # Generate the plot
-plot_data_type_contrast()
+if __name__ == '__main__':
+    plot_data_type_contrast()

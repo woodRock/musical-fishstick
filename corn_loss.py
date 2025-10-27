@@ -5,12 +5,12 @@ def corn_loss(logits, y_train, num_classes):
     """Computes the CORN loss.
 
     Args:
-        logits: Logits from the model (batch_size, num_classes - 1).
-        y_train: Ground truth labels (batch_size).
-        num_classes: Total number of classes.
+        logits (torch.Tensor): Logits from the model (batch_size, num_classes - 1).
+        y_train (torch.Tensor): Ground truth labels (batch_size).
+        num_classes (int): Total number of classes.
 
     Returns:
-        The CORN loss.
+        torch.Tensor: The CORN loss.
     """
     # Create binary targets for each of the K-1 tasks
     y_onehot = torch.zeros_like(logits)

@@ -1,3 +1,5 @@
+"""Module for evaluating machine learning models on various datasets."""
+
 import argparse
 import json
 import os
@@ -11,11 +13,17 @@ import models
 import dl_trainer
 
 def main():
+    """Main function to parse arguments, evaluate models, and save results.
+
+    This function sets up argument parsing for dataset, model types (scikit-learn or PyTorch),
+    loads the specified dataset, and performs 30 runs of training and evaluation.
+    It calculates various metrics, aggregates them, and saves the results to a JSON file.
+    """
     parser = argparse.ArgumentParser(description="Evaluate a model on a dataset for 30 runs.")
-    parser.add_argument('--dataset', type=str, required=True)
-    parser.add_argument('--model', type=str, help='The scikit-learn model to evaluate.')
-    parser.add_argument('--base_model', type=str, help='The base model for PyTorch evaluations.')
-    parser.add_argument('--head_model', type=str, help='The head model for PyTorch evaluations.')
+    parser.add_argument('--dataset', type=str, required=True, help='The name of the dataset to use.')
+    parser.add_argument('--model', type=str, help='The scikit-learn model to evaluate (e.g., DecisionTree, SVM).')
+    parser.add_argument('--base_model', type=str, help='The base model for PyTorch evaluations (e.g., MLPBase, LinearBase).')
+    parser.add_argument('--head_model', type=str, help='The head model for PyTorch evaluations (e.g., ClassificationHead, OrdinalHead).')
     args = parser.parse_args()
 
     os.makedirs('results', exist_ok=True)

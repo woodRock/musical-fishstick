@@ -18,14 +18,14 @@ def load_results_to_dataframe():
         with open(os.path.join(results_dir, file_name), 'r') as f:
             data = json.load(f)
             # Skip regression results for this chart
-            if data['dataset'] == 'Boston' and 'QWK' not in data['evaluation_metrics']:
+            if data['dataset'] == 'Boston' and 'QWK' not in data['aggregated_metrics']:
                 continue
             
             result_row = {
                 'model': data.get('model_name'),
                 'dataset': data.get('dataset'),
                 'timestamp': data.get('timestamp', '19700101_000000'), # Default for old files
-                **data.get('evaluation_metrics', {})
+                **{f'{metric}': values['mean'] for metric, values in data.get('aggregated_metrics', {}).items()}
             }
             all_results.append(result_row)
             
@@ -44,7 +44,9 @@ def load_results_to_dataframe():
         'MLP-MLP-EMD': 'MLP (EMD)',
         'MLP-CORAL': 'CORAL',
         'MLP-CORN': 'CORN',
-        'CLM': 'CLM'
+        'CLM': 'CLM',
+        'DecisionTree': 'Decision Tree',
+        'SVM': 'SVM',
     }
     df['model'] = df['model'].replace(name_map)
 
@@ -61,8 +63,8 @@ def create_grouped_bar_chart(df, metric, output_filename):
         return
 
     # We only want to plot the MLP-based models for a clean comparison
-    mlp_models = ['POM (MLP)', 'Adjacent (MLP)', 'MLP', 'MLP (EMD)', 'CORAL', 'CORN']
-    plot_df = df[df['model'].isin(mlp_models)]
+    # For this chart, we'll include all models that have results
+    plot_df = df.copy()
 
     # Pivot the data for plotting
     pivot_df = plot_df.pivot(index='dataset', columns='model', values=metric)

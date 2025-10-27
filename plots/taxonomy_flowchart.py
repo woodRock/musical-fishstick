@@ -1,5 +1,23 @@
+"""Module for generating a conceptual flowchart illustrating the taxonomy of ordinal classification methods."""
+
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+
+def connect(posA, posB, style='->', lw=1):
+    """Draw a connection patch between two points on the plot.
+
+    Args:
+        posA (tuple): (x, y) coordinates of the starting point.
+        posB (tuple): (x, y) coordinates of the ending point.
+        style (str, optional): Arrow style for the connection. Defaults to '->'.
+        lw (int, optional): Line width of the connection. Defaults to 1.
+    """
+    # lw (linewidth) must be an argument for ConnectionPatch,
+    # not part of the arrowstyle string.
+    con = patches.ConnectionPatch(posA, posB, 'data', 'data',
+                                  arrowstyle=style, shrinkA=10, shrinkB=10,
+                                  ec='gray', lw=lw)
+    ax.add_patch(con)
 
 # Set up the figure and axes
 fig, ax = plt.subplots(figsize=(12, 10))
@@ -57,15 +75,6 @@ ax.text(11.2, l4_y, "Ordinal Loss (CORAL, EMD)\nOrdinal Output Layer", ha='cente
          va='center', bbox=model_props)
 
 # --- Draw Connecting Lines ---
-def connect(posA, posB, style='->', lw=1):
-    """Draw a connection patch."""
-    # lw (linewidth) must be an argument for ConnectionPatch,
-    # not part of the arrowstyle string.
-    con = patches.ConnectionPatch(posA, posB, 'data', 'data',
-                                  arrowstyle=style, shrinkA=10, shrinkB=10,
-                                  ec='gray', lw=lw)
-    ax.add_patch(con)
-
 # L1 to L2
 connect((6, l1_y), (3, l2_y))
 connect((6, l1_y), (9, l2_y))
