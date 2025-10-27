@@ -1,7 +1,7 @@
 {
     "model_name": "DecisionTree",
     "dataset": "Poker",
-    "timestamp": "20251027_192553",
+    "timestamp": "20251027_204103",
     "model_params": {
         "ccp_alpha": 0.0,
         "class_weight": null,

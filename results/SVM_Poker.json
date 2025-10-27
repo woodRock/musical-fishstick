@@ -1,7 +1,7 @@
 {
     "model_name": "SVM",
     "dataset": "Poker",
-    "timestamp": "20251027_193751",
+    "timestamp": "20251027_204747",
     "model_params": {
         "C": 1.0,
         "break_ties": false,

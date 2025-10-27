@@ -1,3 +1,6 @@
+
+"""Module for loading model results and creating grouped bar charts."""
+
 import os
 import json
 import pandas as pd
@@ -5,8 +8,19 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def load_results_to_dataframe():
-    """Loads all JSON results from the results directory into a pandas DataFrame."""
-    results_dir = 'results'
+    """Loads all JSON results from the results directory into a pandas DataFrame.
+
+    This function scans the 'results' directory for JSON files, parses them,
+    and consolidates the evaluation metrics into a single pandas DataFrame.
+    It filters out regression results for the 'Boston' dataset if 'QWK' is not present,
+    and cleans up model names for consistent display. Only the most recent result
+    for each model-dataset pair is kept.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing the consolidated results,
+                      or an empty DataFrame if no results are found or processed.
+    """
+    results_dir = '../../results'
     if not os.path.exists(results_dir):
         print(f"Results directory '{results_dir}' not found.")
         return pd.DataFrame()
@@ -18,14 +32,14 @@ def load_results_to_dataframe():
         with open(os.path.join(results_dir, file_name), 'r') as f:
             data = json.load(f)
             # Skip regression results for this chart
-            if data['dataset'] == 'Boston' and 'QWK' not in data['aggregated_metrics']:
+            if data['dataset'] == 'Boston' and 'QWK' not in data['evaluation_metrics']:
                 continue
             
             result_row = {
                 'model': data.get('model_name'),
                 'dataset': data.get('dataset'),
                 'timestamp': data.get('timestamp', '19700101_000000'), # Default for old files
-                **{f'{metric}': values['mean'] for metric, values in data.get('aggregated_metrics', {}).items()}
+                **data.get('evaluation_metrics', {})
             }
             all_results.append(result_row)
             
@@ -44,9 +58,7 @@ def load_results_to_dataframe():
         'MLP-MLP-EMD': 'MLP (EMD)',
         'MLP-CORAL': 'CORAL',
         'MLP-CORN': 'CORN',
-        'CLM': 'CLM',
-        'DecisionTree': 'Decision Tree',
-        'SVM': 'SVM',
+        'CLM': 'CLM'
     }
     df['model'] = df['model'].replace(name_map)
 
@@ -57,14 +69,25 @@ def load_results_to_dataframe():
     return df
 
 def create_grouped_bar_chart(df, metric, output_filename):
-    """Creates and saves a grouped bar chart for a given metric."""
+    """Creates and saves a grouped bar chart for a given metric.
+
+    This function filters the input DataFrame to include only MLP-based models,
+    pivots the data, and then generates a grouped bar chart comparing model
+    performance across different datasets for the specified metric. The chart
+    is saved as a PNG image.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame containing model results.
+        metric (str): The name of the metric to plot (e.g., 'QWK', 'MAE').
+        output_filename (str): The path and filename to save the generated chart.
+    """
     if df.empty or metric not in df.columns:
         print(f"No data available to plot for metric: {metric}")
         return
 
     # We only want to plot the MLP-based models for a clean comparison
-    # For this chart, we'll include all models that have results
-    plot_df = df.copy()
+    mlp_models = ['POM (MLP)', 'Adjacent (MLP)', 'MLP', 'MLP (EMD)', 'CORAL', 'CORN']
+    plot_df = df[df['model'].isin(mlp_models)]
 
     # Pivot the data for plotting
     pivot_df = plot_df.pivot(index='dataset', columns='model', values=metric)
@@ -96,6 +119,7 @@ if __name__ == '__main__':
     metrics_to_plot = ['QWK', 'MAE', 'MSE', 'Accuracy', 'Balanced Acc.']
     
     for metric in metrics_to_plot:
-        output_file = os.path.join('figures', f'{metric.lower().replace(" ", "_")}_summary_chart.png')
+        output_file = os.path.join('../../figures', f'{metric.lower().replace(" ", "_")}_summary_chart.png')
         print(f"\nGenerating chart for {metric}...")
         create_grouped_bar_chart(results_df.copy(), metric=metric, output_filename=output_file)
+

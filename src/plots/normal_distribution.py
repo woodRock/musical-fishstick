@@ -96,7 +96,7 @@ def plot_threshold_model(dist_type='logistic', num_classes=5, figsize=(10, 5)):
     ax.legend(loc='upper right', frameon=True)
     ax.grid(True, linestyle=':', alpha=0.6)
     plt.tight_layout()
-    plt.savefig("figures/threshold_based_ordinal_models.png", dpi=300)
+    plt.savefig("../../figures/threshold_based_ordinal_models.png", dpi=300)
     plt.show()
 
 # --- Generate the plots ---

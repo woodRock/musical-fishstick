@@ -8,8 +8,8 @@ import numpy as np
 from datetime import datetime
 from sklearn.model_selection import train_test_split
 
+from models import model_factory
 import util
-import models
 import dl_trainer
 
 def main():
@@ -21,9 +21,14 @@ def main():
     """
     parser = argparse.ArgumentParser(description="Evaluate a model on a dataset for 30 runs.")
     parser.add_argument('--dataset', type=str, required=True, help='The name of the dataset to use.')
-    parser.add_argument('--model', type=str, help='The scikit-learn model to evaluate (e.g., DecisionTree, SVM).')
-    parser.add_argument('--base_model', type=str, help='The base model for PyTorch evaluations (e.g., MLPBase, LinearBase).')
-    parser.add_argument('--head_model', type=str, help='The head model for PyTorch evaluations (e.g., ClassificationHead, OrdinalHead).')
+    parser.add_argument('--model', type=str, help='The scikit-learn model to evaluate (options: DecisionTree, SVM, CLM).')
+    parser.add_argument('--base_model', type=str, help='The base model for PyTorch evaluations (options: Linear, MLP).')
+    parser.add_argument('--head_model', type=str, help='The head model for PyTorch evaluations (options: ClassificationHead, OrdinalHead, POM, Adjacent, CORAL, CORN, MLP, MLP-EMD).')
+    parser.add_argument('--num_runs', type=int, default=30, help='Number of runs to perform for evaluation (default: 30).')
+    parser.add_argument('--test_size', type=float, default=0.2, help='Proportion of the dataset to include in the test split (default: 0.2).')
+    parser.add_argument('--n_epochs', type=int, default=20, help='Number of training epochs for deep learning models (default: 20).')
+    parser.add_argument('--batch_size', type=int, default=32, help='Batch size for deep learning models (default: 32).')
+    parser.add_argument('--learning_rate', type=float, default=0.001, help='Learning rate for deep learning models (default: 0.001).')
     args = parser.parse_args()
 
     os.makedirs('results', exist_ok=True)
@@ -32,11 +37,10 @@ def main():
     X, y, is_regression = util.load_dataset(args.dataset)
 
     run_results = []
-    NUM_RUNS = 30
 
-    for i in range(NUM_RUNS):
-        print(f"\n--- Starting Run {i+1}/{NUM_RUNS} ---")
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=i) # Use loop index as random_state
+    for i in range(args.num_runs):
+        print(f"--- Starting Run {i+1}/{args.num_runs} ---")
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=args.test_size, random_state=i) # Use loop index as random_state
 
         model_params = {}
         
@@ -44,17 +48,17 @@ def main():
             model_name = f"{args.base_model}-{args.head_model}"
             model_kwargs = {'input_size': X.shape[1], 'num_classes': int(y.max() + 1)}
             model_params = {"base": args.base_model, "head": args.head_model, **model_kwargs}
-            model = models.get_dl_model(args.base_model, args.head_model, is_regression, **model_kwargs)
+            model = model_factory.get_dl_model(args.base_model, args.head_model, is_regression, **model_kwargs)
 
             if args.head_model.lower() == 'pom':
-                model = dl_trainer.train_pom_scratch_model(model, X_train, y_train, model_kwargs['num_classes'])
+                model = dl_trainer.train_pom_scratch_model(model, X_train, y_train, model_kwargs['num_classes'], n_epochs=args.n_epochs, batch_size=args.batch_size, lr=args.learning_rate)
                 y_pred = dl_trainer.predict_pom_scratch(model, X_test)
             elif args.head_model.lower() == 'adjacent':
-                model = dl_trainer.train_adjacent_model(model, X_train, y_train)
+                model = dl_trainer.train_adjacent_model(model, X_train, y_train, n_epochs=args.n_epochs, batch_size=args.batch_size, lr=args.learning_rate)
                 y_pred = dl_trainer.predict_adjacent(model, X_test)
             elif args.head_model.lower() in ['coral', 'corn']:
                 train_func = dl_trainer.train_coral_model if args.head_model.lower() == 'coral' else dl_trainer.train_corn_model
-                model = train_func(model, X_train, y_train, model_kwargs['num_classes'])
+                model = train_func(model, X_train, y_train, model_kwargs['num_classes'], n_epochs=args.n_epochs, batch_size=args.batch_size, lr=args.learning_rate)
                 y_pred = dl_trainer.predict_coral(model, X_test)
             elif args.head_model.lower() in ['mlp', 'mlp-emd']:
                 train_func = dl_trainer.train_emd_model if args.head_model.lower() == 'mlp-emd' else dl_trainer.train_model
@@ -66,7 +70,7 @@ def main():
 
         elif args.model:
             model_name = args.model
-            model = models.get_sklearn_model(model_name, is_regression)
+            model = model_factory.get_sklearn_model(model_name, is_regression)
             model_params = util.get_serializable_params(model)
             if model_name.lower() in ['pom', 'clm']:
                 model.fit(X_train, y_train.to_numpy())

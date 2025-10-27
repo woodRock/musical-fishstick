@@ -1,7 +1,7 @@
 {
     "model_name": "CLM",
     "dataset": "Wine",
-    "timestamp": "20251027_192533",
+    "timestamp": "20251027_204101",
     "model_params": {
         "alpha": 0,
         "copy_X": true,

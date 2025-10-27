@@ -1,7 +1,7 @@
 {
     "model_name": "DecisionTree",
     "dataset": "Wine",
-    "timestamp": "20251027_192546",
+    "timestamp": "20251027_204102",
     "model_params": {
         "ccp_alpha": 0.0,
         "class_weight": null,

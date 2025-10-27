@@ -95,6 +95,6 @@ connect((11.2, l3_y_spec), (11.2, l4_y))
 
 # Save and show
 plt.tight_layout()
-plt.savefig("figures/taxonomy_flowchart.png", dpi=300)
+plt.savefig("../../figures/taxonomy_flowchart.png", dpi=300)
 print("Taxonomy flowchart saved as 'figures/taxonomy_flowchart.png'")
 plt.show()

@@ -94,7 +94,7 @@ def plot_deep_learning_models(k=5, figsize=(14, 7)):
 
     # --- Finalize ---
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-    plt.savefig("figures/deep_learning_ordinal_models.png", dpi=300)
+    plt.savefig("../../figures/deep_learning_ordinal_models.png", dpi=300)
     plt.show()
 
 # --- Generate the plot ---

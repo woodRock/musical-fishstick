@@ -121,7 +121,7 @@ def plot_evaluation_metrics_contrast(k=5, figsize=(12, 6)):
 
     # --- Finalize ---
     plt.tight_layout(rect=[0, 0, 1, 0.95])
-    plt.savefig("figures/evaluation_metrics_contrast.png", dpi=300)
+    plt.savefig("../../figures/evaluation_metrics_contrast.png", dpi=300)
     plt.show()
 
 # --- Generate the plot ---

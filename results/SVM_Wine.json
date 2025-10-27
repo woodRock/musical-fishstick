@@ -1,7 +1,7 @@
 {
     "model_name": "SVM",
     "dataset": "Wine",
-    "timestamp": "20251027_192754",
+    "timestamp": "20251027_204123",
     "model_params": {
         "C": 1.0,
         "break_ties": false,

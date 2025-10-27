@@ -77,7 +77,7 @@ def plot_data_type_contrast(figsize=(10, 4)):
     ax.text(2.5, 0.8, "Distance: Measurable & Meaningful\n(e.g., $2-1 = 1$, $3-2=1$)", ha='center', va='bottom', fontsize=10, color='darkblue')
 
     plt.tight_layout(rect=[0, 0.05, 1, 0.95]) # Adjust layout to make space for suptitle
-    plt.savefig("figures/data_type_contrast.png", dpi=300)
+    plt.savefig("../../figures/data_type_contrast.png", dpi=300)
     plt.show()
 
 # Generate the plot

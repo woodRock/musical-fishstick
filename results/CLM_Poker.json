@@ -1,7 +1,7 @@
 {
     "model_name": "CLM",
     "dataset": "Poker",
-    "timestamp": "20251027_192518",
+    "timestamp": "20251027_204100",
     "model_params": {
         "alpha": 0,
         "copy_X": true,

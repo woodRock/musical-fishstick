@@ -2,43 +2,43 @@ API Reference
 =============
 
 .. automodule:: adjacent_model
-   :members:
+   :members: AdjacentHead, adjacent_loss, adjacent_predict
 
 .. automodule:: classification_head
-   :members:
+   :members: ClassificationHead
 
 .. automodule:: combined_model
-   :members:
+   :members: CombinedModel
 
 .. automodule:: coral
-   :members:
+   :members: OrdinalHead, coral_loss, coral_predict
 
 .. automodule:: corn_loss
-   :members:
+   :members: corn_loss
 
 .. automodule:: create_chart
-   :members:
+   :members: load_results_to_dataframe, create_grouped_bar_chart
 
 .. automodule:: dl_models
-   :members:
+   :members: MLPBase, LinearBase
 
 .. automodule:: dl_trainer
-   :members:
+   :members: train_model, predict, train_coral_model, predict_coral, train_pom_scratch_model, predict_pom_scratch, train_adjacent_model, predict_adjacent, train_emd_model, train_corn_model
 
 .. automodule:: emd_loss
-   :members:
+   :members: emd_loss
 
 .. automodule:: evaluate
-   :members:
+   :members: main
 
 .. automodule:: generate_table
-   :members:
+   :members: generate_latex_table
 
 .. automodule:: models
-   :members:
+   :members: get_dl_model, get_sklearn_model
 
 .. automodule:: pom_scratch
-   :members:
+   :members: POMHead, pom_loss, pom_predict
 
 .. automodule:: util
-   :members:
+   :members: get_serializable_params, calculate_metrics, load_car_evaluation, load_wine_quality, load_boston_housing, load_poker_hand, load_dataset

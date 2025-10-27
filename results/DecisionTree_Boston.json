@@ -1,7 +1,7 @@
 {
     "model_name": "DecisionTree",
     "dataset": "Boston",
-    "timestamp": "20251027_192528",
+    "timestamp": "20251027_204050",
     "model_params": {
         "ccp_alpha": 0.0,
         "class_weight": null,
