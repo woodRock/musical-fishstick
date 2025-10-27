@@ -1,8 +1,10 @@
-"""Generates and saves a plot of the standard normal distribution's PDF.
+""" Module to generate conceptual plots for Threshold-Based Ordinal Models.
 
-This script uses scipy and matplotlib to create a visualization of the probability
-density function (PDF) of a standard normal distribution (mean=0, std=1).
-The resulting plot is saved as 'normal_distribution.png'.
+This module creates visualizations that illustrate how continuous latent variables
+are segmented into discrete ordinal classes using thresholds (cut-points). It supports
+both normal and logistic distributions for the latent variable, demonstrating the
+concepts behind models like the Proportional Odds Model (logistic) and Ordered Probit
+Model (normal).
 """
 import matplotlib.pyplot as plt
 import numpy as np

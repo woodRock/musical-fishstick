@@ -10,6 +10,9 @@ from .adjacent_head import AdjacentHead
 from .coral_head import OrdinalHead
 from .classification_head import ClassificationHead
 from .combined_model import CombinedModel
+from .poker_cnn import PokerCNNModel # New import
+from .poker_lstm import PokerLSTMModel
+from .poker_transformer import PokerTransformerModel # New import
 
 class OrdinalSVC(BaseEstimator, ClassifierMixin):
     """
@@ -102,3 +105,16 @@ def get_sklearn_model(model_name, is_regression):
         return OrdinalSVC(random_state=42)
     else:
         raise ValueError(f"Unknown sklearn model: {model_name}")
+
+
+def get_poker_dl_model(model_name, **kwargs):
+    """Returns a PyTorch Lightning model for the Poker Hand dataset."""
+    if model_name.lower() == 'poker_cnn':
+        return PokerCNNModel(**kwargs)
+    elif model_name.lower() == 'poker_lstm':
+        return PokerLSTMModel(**kwargs)
+    elif model_name.lower() == 'poker_transformer':
+        return PokerTransformerModel(**kwargs)
+    # Add other poker models here later
+    else:
+        raise ValueError(f"Unknown poker DL model: {model_name}")
