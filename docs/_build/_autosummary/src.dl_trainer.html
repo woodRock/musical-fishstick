@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>src.dl_trainer &#8212; Musical Fishstick 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <script src="../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="src.models.model_factory" href="src.models.model_factory.html" />
+    <link rel="prev" title="src.util" href="src.util.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-src.dl_trainer">
+<span id="src-dl-trainer"></span><h1>src.dl_trainer<a class="headerlink" href="#module-src.dl_trainer" title="Link to this heading">¶</a></h1>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(model, X_test)</p></td>
+<td><p>Makes predictions with a trained PyTorch model.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_adjacent</span></code>(model, X_test)</p></td>
+<td><p>Makes predictions with a trained scratch Adjacent Category model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_coral</span></code>(model, X_test)</p></td>
+<td><p>Makes predictions with a trained CORAL model.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_pom_scratch</span></code>(model, X_test)</p></td>
+<td><p>Makes predictions with a trained scratch POM model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_adjacent_model</span></code>(model, X_train, y_train)</p></td>
+<td><p>Handles the training loop for the scratch Adjacent Category model.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_coral_model</span></code>(model, X_train, y_train, ...)</p></td>
+<td><p>Handles the training loop for a CORAL model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_corn_model</span></code>(model, X_train, y_train, ...)</p></td>
+<td><p>Handles the training loop for a CORN model.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_emd_model</span></code>(model, X_train, y_train[, ...])</p></td>
+<td><p>Handles the training loop for a model using EMD loss.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_model</span></code>(model, X_train, y_train[, ...])</p></td>
+<td><p>Handles the training loop for a standard PyTorch classification model.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_pom_scratch_model</span></code>(model, X_train, ...)</p></td>
+<td><p>Handles the training loop for the scratch POM model.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Musical Fishstick</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="src.util.html">src.util</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">src.dl_trainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.models.model_factory.html">src.models.model_factory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.models.html">src.models</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="src.util.html">src.util</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">src.dl_trainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.models.model_factory.html">src.models.model_factory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.models.html">src.models</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../modules.html">API Reference</a><ul>
+      <li>Previous: <a href="src.util.html" title="previous chapter">src.util</a></li>
+      <li>Next: <a href="src.models.model_factory.html" title="next chapter">src.models.model_factory</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Gemini.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../_sources/_autosummary/src.dl_trainer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -3,11 +3,11 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 
-from models.coral_head import coral_loss, coral_predict
-from models.corn_loss import corn_loss
-from models.emd_loss import emd_loss
-from models.pom_head import pom_loss, pom_predict
-from models.adjacent_head import adjacent_loss, adjacent_predict
+from src.models.coral_head import coral_loss, coral_predict
+from src.models.corn_loss import corn_loss
+from src.models.emd_loss import emd_loss
+from src.models.pom_head import pom_loss, pom_predict
+from src.models.adjacent_head import adjacent_loss, adjacent_predict
 
 def train_model(model, X_train, y_train, n_epochs=20, batch_size=32, lr=0.001):
     """Handles the training loop for a standard PyTorch classification model."""

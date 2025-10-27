@@ -5,7 +5,7 @@ API Reference
    :toctree: _autosummary
    :recursive:
 
-   util
-   dl_trainer
-   model_factory
-   models
+   src.util
+   src.dl_trainer
+   src.models.model_factory
+   src.models

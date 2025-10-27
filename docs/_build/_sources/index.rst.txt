@@ -10,6 +10,8 @@ Welcome to musical-fishstick's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   modules
+
 .. toctree::
    :maxdepth: 2
    :caption: API Documentation:
