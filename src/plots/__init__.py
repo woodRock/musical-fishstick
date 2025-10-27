@@ -1,0 +1,1 @@
+"""This package contains scripts used to generate the plots and figures for the project."""

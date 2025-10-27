@@ -1,5 +1,9 @@
-"""Module for generating a conceptual flowchart illustrating the taxonomy of ordinal classification methods."""
+"""Generates a flowchart illustrating the taxonomy of ordinal regression models.
 
+This script uses the graphviz library to create a diagram that categorizes
+and shows the relationships between different families of ordinal regression
+models. The output is saved as a PNG image file.
+"""
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 

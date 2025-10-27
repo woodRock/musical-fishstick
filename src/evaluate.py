@@ -8,9 +8,9 @@ import numpy as np
 from datetime import datetime
 from sklearn.model_selection import train_test_split
 
-from models import model_factory
-import util
-import dl_trainer
+from src.models import model_factory
+from src import util
+from src import dl_trainer
 
 def main():
     """Main function to parse arguments, evaluate models, and save results.

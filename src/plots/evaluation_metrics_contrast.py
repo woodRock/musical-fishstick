@@ -1,5 +1,9 @@
-"""Module for generating a conceptual plot to contrast standard and ordinal-aware evaluation metrics."""
+"""Generates a bar chart to contrast different evaluation metrics for selected models.
 
+This script creates a grouped bar chart to compare the performance of 'MLP-POM'
+and 'MLP-CORN' models on the 'Wine' dataset, using three different metrics:
+Mean Absolute Error (MAE), Mean Squared Error (MSE), and Accuracy.
+"""
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -48,8 +52,7 @@ def plot_evaluation_metrics_contrast(k=5, figsize=(12, 6)):
             
     
     # --- Ticks and Labels ---
-    labels = [f'$C_{i+1}
- for i in range(k)]
+    labels = [f'$C_{i+1}' for i in range(k)]
     ticks = np.arange(k)
 
     # ==================================================================

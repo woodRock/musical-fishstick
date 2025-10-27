@@ -1,6 +1,10 @@
+"""Creates a bar chart comparing the performance of different models on a given dataset.
 
-"""Module for loading model results and creating grouped bar charts."""
-
+This script reads a set of JSON files from the 'results' directory, each representing
+the performance of a model. It then extracts a specified metric (e.g., 'MAE', 'MSE')
+and generates a bar chart to visualize and compare the models' performance.
+The resulting chart is saved in the 'figures' directory.
+"""
 import os
 import json
 import pandas as pd
@@ -20,7 +24,7 @@ def load_results_to_dataframe():
         pd.DataFrame: A DataFrame containing the consolidated results,
                       or an empty DataFrame if no results are found or processed.
     """
-    results_dir = '../../results'
+    results_dir = '/Users/woodj/Desktop/musical-fishstick/results'
     if not os.path.exists(results_dir):
         print(f"Results directory '{results_dir}' not found.")
         return pd.DataFrame()
@@ -31,21 +35,28 @@ def load_results_to_dataframe():
     for file_name in result_files:
         with open(os.path.join(results_dir, file_name), 'r') as f:
             data = json.load(f)
-            # Skip regression results for this chart
-            if data['dataset'] == 'Boston' and 'QWK' not in data['evaluation_metrics']:
+            # Skip regression results for this chart if QWK is not present
+            eval_metrics = data.get('aggregated_metrics', {})
+            if data['dataset'].title() == 'Boston' and 'QWK' not in eval_metrics:
                 continue
             
             result_row = {
                 'model': data.get('model_name'),
-                'dataset': data.get('dataset'),
+                'dataset': data.get('dataset').title(), # Normalize dataset name to title case
                 'timestamp': data.get('timestamp', '19700101_000000'), # Default for old files
-                **data.get('evaluation_metrics', {})
             }
+            for metric_name, metric_values in eval_metrics.items():
+                if 'mean' in metric_values:
+                    result_row[metric_name] = metric_values['mean']
+                else:
+                    # Handle cases where 'mean' might not be present, e.g., for raw values
+                    result_row[metric_name] = metric_values
             all_results.append(result_row)
             
     df = pd.DataFrame(all_results)
     
     if df.empty:
+        print("DataFrame is empty after loading all results.")
         return df
 
     # Clean up model names for display before dropping duplicates
@@ -58,7 +69,9 @@ def load_results_to_dataframe():
         'MLP-MLP-EMD': 'MLP (EMD)',
         'MLP-CORAL': 'CORAL',
         'MLP-CORN': 'CORN',
-        'CLM': 'CLM'
+        'CLM': 'CLM',
+        'SVM': 'SVM',
+        'SVOR': 'SVOR'
     }
     df['model'] = df['model'].replace(name_map)
 
@@ -85,13 +98,17 @@ def create_grouped_bar_chart(df, metric, output_filename):
         print(f"No data available to plot for metric: {metric}")
         return
 
-    # We only want to plot the MLP-based models for a clean comparison
-    mlp_models = ['POM (MLP)', 'Adjacent (MLP)', 'MLP', 'MLP (EMD)', 'CORAL', 'CORN']
-    plot_df = df[df['model'].isin(mlp_models)]
+    # Include SVOR and SVM for comparison with MLP-based models
+    models_to_plot = ['POM (MLP)', 'Adjacent (MLP)', 'MLP', 'MLP (EMD)', 'CORAL', 'CORN', 'SVM', 'SVOR']
+    plot_df = df[df['model'].isin(models_to_plot)]
+
+    print(f"Plot DataFrame for {metric} before pivoting:\n{plot_df.to_string()}")
 
     # Pivot the data for plotting
     pivot_df = plot_df.pivot(index='dataset', columns='model', values=metric)
     pivot_df = pivot_df.dropna(how='all') # Drop datasets with no data
+
+    print(f"Pivot DataFrame for {metric} before plotting:\n{pivot_df.to_string()}")
 
     if pivot_df.empty:
         print(f"No data to plot for metric '{metric}' after filtering.")
@@ -110,6 +127,8 @@ def create_grouped_bar_chart(df, metric, output_filename):
     plt.tight_layout(rect=[0, 0, 0.85, 1]) # Adjust layout to make room for legend
 
     # Save the figure
+    output_dir = os.path.dirname(output_filename)
+    os.makedirs(output_dir, exist_ok=True)
     plt.savefig(output_filename)
     print(f"Chart saved to {output_filename}")
     plt.close() # Close the plot to free up memory
@@ -122,4 +141,3 @@ if __name__ == '__main__':
         output_file = os.path.join('../../figures', f'{metric.lower().replace(" ", "_")}_summary_chart.png')
         print(f"\nGenerating chart for {metric}...")
         create_grouped_bar_chart(results_df.copy(), metric=metric, output_filename=output_file)
-
