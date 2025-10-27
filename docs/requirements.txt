@@ -1,1 +1,7 @@
 sphinx
+torch
+pandas
+scikit-learn
+mord
+matplotlib
+scipy
