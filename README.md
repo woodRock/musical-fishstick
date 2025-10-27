@@ -23,7 +23,7 @@ This task occupies a unique space between standard classification and regression
 
 The fundamental challenge in ordinal classification is to develop models that effectively leverage the rank information inherent in the labels, penalizing prediction errors based on their ordinal distance from the true category, rather than treating all misclassifications equally. This conceptual difference is illustrated in Figure~\ref{fig:data_types}.
 
-![A conceptual comparison of data measurement scales. (a) **Nominal** data consists of categories without any inherent order (e.g., fruit types). (b) **Ordinal** data features categories with a meaningful order, but the distances between them are not precisely defined or uniform (e.g., clothing sizes). (c) **Metric** (or Interval/Ratio) data has both a meaningful order and quantifiable, equidistant intervals between values (e.g., numerical measurements).](data_type_contrast.png)
+![A conceptual comparison of data measurement scales. (a) **Nominal** data consists of categories without any inherent order (e.g., fruit types). (b) **Ordinal** data features categories with a meaningful order, but the distances between them are not precisely defined or uniform (e.g., clothing sizes). (c) **Metric** (or Interval/Ratio) data has both a meaningful order and quantifiable, equidistant intervals between values (e.g., numerical measurements).](figures/data_type_contrast.png)
 
 ## Importance and Applications
 
